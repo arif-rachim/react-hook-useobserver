@@ -1,8 +1,4 @@
-/**
- * hook to listen when observer is changed, this is an alternative then using the addListener in observer.
- * @param {{current}|{current}[]} observers
- * @param {function(any)} listener
- */
+
 import {Observer} from "./useObserver";
 import {useLayoutEffect, useRef} from "react";
 import {isFunction, isNullOrUndefined} from "./utils";

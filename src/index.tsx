@@ -5,9 +5,9 @@ import useObserverMapper from "./useObserverMapper";
 import useObserverValue from "./useObserverValue";
 
 export default {
-    ObserverValue,
     useObserverListener,
     useObserver,
+    ObserverValue,
     useObserverValue,
     useObserverMapper
 }
