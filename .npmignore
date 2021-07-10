@@ -1,5 +1,4 @@
 # Project exclude paths
 /node_modules/
 /.idea/
-/lib/
-/src/__snapshots__/
+/src/

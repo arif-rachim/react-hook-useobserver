@@ -5,9 +5,14 @@
     "jsx": "react",
     "declaration": true,
     "outDir": "lib",
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src"
+  ],
+  "exclude": [
+    "src/**/*.test.tsx",
+    "src/setupEnzyme.ts"
   ]
 }

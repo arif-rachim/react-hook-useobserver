@@ -6,9 +6,9 @@ function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-export default function useObserver<S>(InitialValue: S | (() => S)): [Observer<S>, (value: ((value:S) => S) | S) => void] {
+export default function useObserver<S>(initialValue: (S | (() => S)) = undefined ): [Observer<S>, (value: ((value:S) => S) | S) => void] {
 
-    const defaultValueRef = useRef(InitialValue);
+    const defaultValueRef = useRef(initialValue);
     return useMemo(() => {
         let listeners: Function[] = [];
         const $value: Observer<S> = {
@@ -46,7 +46,7 @@ export default function useObserver<S>(InitialValue: S | (() => S)): [Observer<S
                 listeners.splice(listeners.indexOf(listener), 1);
             }
         }
-
+        $value.current = currentValue;
         $value.addListener = addListener;
         return [$value, setValue]
     }, []);
