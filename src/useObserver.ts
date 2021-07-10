@@ -6,7 +6,7 @@ function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-export default function useObserver<S>(InitialValue: S | (() => S)): [Observer<S>, Dispatch<SetStateAction<S | undefined>>] {
+export default function useObserver<S>(InitialValue: S | (() => S)): [Observer<S>, (value: ((value:S) => S) | S) => void] {
 
     const defaultValueRef = useRef(InitialValue);
     return useMemo(() => {
@@ -17,8 +17,8 @@ export default function useObserver<S>(InitialValue: S | (() => S)): [Observer<S
                 }
             }
         };
-        const currentValue = isFunction(defaultValueRef.current) ? (defaultValueRef.current as Function).call(null) : defaultValueRef.current;
 
+        const currentValue = isFunction(defaultValueRef.current) ? (defaultValueRef.current as Function).call(null) : defaultValueRef.current;
 
         function setValue(callbackOrValue: S | ((oldValue: S) => S)) {
             const oldVal = defaultValueRef.current;
