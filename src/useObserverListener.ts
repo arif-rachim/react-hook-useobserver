@@ -3,8 +3,8 @@ import {Observer} from "./useObserver";
 import {useLayoutEffect, useRef} from "react";
 import {isFunction, isNullOrUndefined} from "./utils";
 
-export type ObserverOrObservers<S> = Observer<S>|Observer<S>[];
-export type ObserverValue<S> = S | (S|null)[] | null;
+export type ObserverOrObservers<S> = Observer<S>|Observer<any>[];
+export type ObserverValue<S> = S | [] | null;
 export type UseObserverListener<S> = (value: ObserverValue<S>) => void;
 
 export default function useObserverListener<S>(observers:ObserverOrObservers<S>, listener:UseObserverListener<S>) {

@@ -1,12 +1,14 @@
-import {Dispatch, MutableRefObject, SetStateAction, useMemo, useRef, useState} from "react";
+import {MutableRefObject, useMemo, useRef} from "react";
 
-export type Observer<S> = MutableRefObject<S | undefined> & { addListener: (listener: (value: S) => void) => () => void };
+export type Observer<S> =
+    MutableRefObject<S | undefined>
+    & { addListener: (listener: (value: S) => void) => () => void };
 
 function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-export default function useObserver<S>(initialValue: (S | (() => S)) = undefined ): [Observer<S>, (value: ((value:S) => S) | S) => void] {
+export default function useObserver<S>(initialValue: (S | (() => S)) = undefined): [Observer<S>, (value: ((value: S) => S) | S) => void] {
 
     const defaultValueRef = useRef(initialValue);
     return useMemo(() => {
@@ -25,7 +27,7 @@ export default function useObserver<S>(initialValue: (S | (() => S)) = undefined
             let newVal: S | null = null;
             if (isFunction(callbackOrValue)) {
                 newVal = (callbackOrValue as ((oldValue: S) => S)).apply(null, [currentValue]);
-            }else{
+            } else {
                 newVal = callbackOrValue as S;
             }
             if (newVal === oldVal) {
@@ -46,6 +48,7 @@ export default function useObserver<S>(initialValue: (S | (() => S)) = undefined
                 listeners.splice(listeners.indexOf(listener), 1);
             }
         }
+
         $value.current = currentValue;
         $value.addListener = addListener;
         return [$value, setValue]

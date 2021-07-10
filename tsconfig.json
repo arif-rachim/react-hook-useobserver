@@ -13,6 +13,6 @@
   ],
   "exclude": [
     "src/**/*.test.tsx",
-    "src/setupEnzyme.ts"
+    "src/setupEnzyme"
   ]
 }
