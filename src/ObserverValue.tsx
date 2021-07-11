@@ -1,10 +1,10 @@
 import {ReactNode} from "react";
-import {ObserverOrObservers} from "./useObserverListener";
-import useObserverValue from "./useObserverValue";
+import {useObserverValue} from "./useObserverValue";
+import {Observer} from "./useObserver";
 
-type ObserverValueProps<S> = {observers:ObserverOrObservers<S>,children:(value:S | (S|null)[] | null) => ReactNode};
+type ObserverValueProps<S> = {observers:(Observer<S> | Observer<any>[]),children:(value:S | any[] | null) => ReactNode};
 
 export default function ObserverValue<S>(props:ObserverValueProps<S>) {
-    const state = useObserverValue(props.observers)
+    const state = useObserverValue(props.observers as Observer<any>[])
     return props.children(state);
 }

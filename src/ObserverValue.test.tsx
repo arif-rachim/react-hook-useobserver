@@ -3,8 +3,9 @@ import * as React from "react";
 import {mount} from "enzyme";
 import {useEffect} from "react";
 import waitForExpect from "wait-for-expect";
-import useObserverValue from "./useObserverValue";
+import {useObserverValue} from "./useObserverValue";
 import {act} from "react-dom/test-utils";
+import {useObserverMapper} from "./useObserverMapper";
 
 function ObserverTest({initialValue}){
     const [$value] = useObserver(initialValue);
@@ -33,7 +34,6 @@ function TestMultipleObserverValue({propOne,propTwo}){
     const [$stateOne,setStateOne] = useObserver(propOne);
     const [$stateTwo,setStateTwo] = useObserver(propTwo);
     const [stateOne,stateTwo] = useObserverValue([$stateOne,$stateTwo]);
-
     return <div id={'content'}>
         {stateOne} {stateTwo}
     </div>
@@ -42,6 +42,8 @@ function TestMultipleObserverValue({propOne,propTwo}){
 function TestMultipleObserverValueWithEffect({propOne='',propTwo=''}){
     const [$stateOne,setStateOne] = useObserver(propOne);
     const [$stateTwo,setStateTwo] = useObserver(propTwo);
+    const shit = useObserverValue($stateOne);
+
     const [stateOne,stateTwo] = useObserverValue([$stateOne,$stateTwo]);
     useEffect(() => {
         setTimeout(() => {
@@ -76,6 +78,7 @@ function UnMountChild(){
 }
 function Detail({initialValue}) {
     const [$value] = useObserver(initialValue);
+
     return <div>
         {useObserverValue($value)}
     </div>

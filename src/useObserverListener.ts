@@ -1,39 +1,29 @@
-
-import {Observer} from "./useObserver";
 import {useLayoutEffect, useRef} from "react";
 import {isFunction, isNullOrUndefined} from "./utils";
+import {Observer} from "./useObserver";
 
-export type ObserverOrObservers<S> = Observer<S>|Observer<any>[];
-export type ObserverValue<S> = S | [] | null;
-export type UseObserverListener<S> = (value: ObserverValue<S>) => void;
-
-export default function useObserverListener<S>(observers:ObserverOrObservers<S>, listener:UseObserverListener<S>) {
+export function useObserverListener<S>(observer:Observer<S>,listener:(value:S) => void):void;
+export function useObserverListener(observer:Observer<any>[],listener:(value:any[]) => void):void;
+export function useObserverListener(observers: any, listener: (value: any) => void) {
     const observerIsUndefined = observers === undefined;
     const observerIsArray = observerIsUndefined ? false : Array.isArray(observers);
-    let observerArray:Observer<S>[] = observerIsArray ? (observers as Observer<S>[]) : [(observers as Observer<S>)];
-    const propsRef = useRef({listener,observerArray,observerIsArray});
-    propsRef.current = {listener,observerArray,observerIsArray};
+    let observerArray = observerIsArray ? observers : [observers];
+    const propsRef = useRef({listener, observerArray, observerIsArray});
+    propsRef.current = {listener, observerArray, observerIsArray};
 
     useLayoutEffect(() => {
-        const {listener:listenerCallback,observerArray,observerIsArray} = propsRef.current;
-        function listener(index:number) {
-            return function invokerExecutor(newValue:S) {
+        const {listener: listenerCallback, observerArray, observerIsArray} = propsRef.current;
+
+        function listener(index: number) {
+            return function invokerExecutor(newValue) {
                 let currentValue = observerArray.map(o => o.current);
                 let newValues = [...currentValue];
                 newValues.splice(index, 1, newValue);
-                const values: S | (S | null)[] | null = observerIsArray ? newValues : newValues[0];
+                const values = observerIsArray ? newValues : newValues[0];
                 listenerCallback.apply(null, [values]);
             };
         }
-
-        const removeListeners:Function[] = observerArray.map(($o, index) => {
-            if (isNullOrUndefined($o) || !isFunction($o.addListener)) {
-                console.warn('We have undefined observer this might cause issue in future');
-                return () => {
-                };
-            }
-            return $o.addListener(listener(index));
-        });
+        const removeListeners: Function[] = observerArray.map(($o, index) => $o.addListener(listener(index)));
         return () => removeListeners.forEach(removeListener => removeListener.call(null))
     }, []);
 }
