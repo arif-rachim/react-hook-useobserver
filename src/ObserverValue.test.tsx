@@ -1,11 +1,11 @@
 import useObserver from "./useObserver";
 import * as React from "react";
-import {mount} from "enzyme";
 import {useEffect} from "react";
+import {mount} from "enzyme";
 import waitForExpect from "wait-for-expect";
 import {useObserverValue} from "./useObserverValue";
 import {act} from "react-dom/test-utils";
-import {useObserverMapper} from "./useObserverMapper";
+import ObserverValue from "./ObserverValue";
 
 function ObserverTest({initialValue}){
     const [$value] = useObserver(initialValue);
@@ -26,6 +26,19 @@ function ObserverTestWithUpdateState({value}){
         setState(value)
     },[value]);
     return <div id={'content'}>
+        {useObserverValue($value)}
+    </div>
+}
+
+function ObserverTestWithUpdateStateWithObserver({value}){
+    const [$value,setState] = useObserver(false);
+    useEffect(() => {
+        setState(value)
+    },[value]);
+    return <div>
+        <ObserverValue observers={$value} render={value => {
+            return <div id={'content'}>{value}</div>
+        }} />
         {useObserverValue($value)}
     </div>
 }
@@ -117,6 +130,13 @@ test('Test useObserverValue with initial data with function constructor', async 
 
 test('Test multiple observer values',async () => {
     const test = mount(<TestMultipleObserverValue propOne={'Hello'} propTwo={'World'}/>)
+    await waitForExpect(() => {
+        expect(test.find('#content').html()).toMatch('<div id="content">Hello World</div>');
+    })
+});
+
+test('Test multiple observer values',async () => {
+    const test = mount(<ObserverTestWithUpdateStateWithObserver value={'Hello World'}/>)
     await waitForExpect(() => {
         expect(test.find('#content').html()).toMatch('<div id="content">Hello World</div>');
     })

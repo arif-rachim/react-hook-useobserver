@@ -1,5 +1,4 @@
 import {useLayoutEffect, useRef} from "react";
-import {isFunction, isNullOrUndefined} from "./utils";
 import {Observer} from "./useObserver";
 
 export function useObserverListener<S>(observer:Observer<S>,listener:(value:S) => void):void;
