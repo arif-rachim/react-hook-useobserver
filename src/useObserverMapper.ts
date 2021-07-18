@@ -1,5 +1,5 @@
 import {useObserverListener} from "./useObserverListener";
-import useObserver, {Observer} from "./useObserver";
+import {Observer,useObserver} from "./useObserver";
 import {isNullOrUndefined} from "./utils";
 
 export function useObserverMapper<S, S1>(observer: Observer<S>, map: (value: S) => S1): Observer<S1>;

@@ -8,7 +8,7 @@ function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
 
-export default function useObserver<S>(initialValue: (S | (() => S)) = undefined): [Observer<S>, (value: ((value: S) => S) | S) => void] {
+export function useObserver<S>(initialValue: (S | (() => S)) = undefined): [Observer<S>, (value: ((value: S) => S) | S) => void] {
 
     const defaultValueRef = useRef(initialValue);
     return useMemo(() => {

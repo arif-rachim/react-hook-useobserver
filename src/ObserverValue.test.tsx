@@ -1,11 +1,11 @@
-import useObserver from "./useObserver";
+import {useObserver} from "./useObserver";
 import * as React from "react";
 import {useEffect} from "react";
 import {mount} from "enzyme";
 import waitForExpect from "wait-for-expect";
 import {useObserverValue} from "./useObserverValue";
 import {act} from "react-dom/test-utils";
-import ObserverValue from "./ObserverValue";
+import {ObserverValue} from "./ObserverValue";
 
 function ObserverTest({initialValue}){
     const [$value] = useObserver(initialValue);
