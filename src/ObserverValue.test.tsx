@@ -13,6 +13,32 @@ function ObserverTest({initialValue}){
         {$value.current}
     </div>
 }
+
+function ObserverTestUpdateWithFunction(){
+    const [$value,setValue] = useObserver();
+    useEffect(() => {
+        
+        setValue(oldValue => {
+            return 'Dang';
+        })
+        
+        setTimeout(() => {
+            setValue(oldValue => {
+                if(oldValue !== 'Dang'){
+                    throw new Error();
+                }
+                return 'Dong';
+            })
+        },300);
+    },[]);
+    return <ObserverTestUpdateWithFunctionDetail $value={$value}/>
+}
+
+function ObserverTestUpdateWithFunctionDetail({$value}){
+    const value = useObserverValue($value);
+    return <div id={'content'}>{value}</div>
+}
+
 function ObserverValueTestWithInitialData({value}){
     const [$value] = useObserver(value);
     return <div id={'content'}>
@@ -159,3 +185,14 @@ test('Test unmount child',async () => {
         })
     });
 });
+
+test('Test observer data with update function',async() => {
+    await act(async () => {
+        const test = mount(<ObserverTestUpdateWithFunction/>);
+        await waitForExpect(() => {
+            expect(test.find('#content').html()).toMatch('<div id="content">Dong</div>');
+        });
+    });
+
+
+})

@@ -21,12 +21,12 @@ export function useObserver<S>(initialValue: (S | (() => S)) = undefined): [Obse
         };
 
         const currentValue = isFunction(defaultValueRef.current) ? (defaultValueRef.current as Function).call(null) : defaultValueRef.current;
-
+        
         function setValue(callbackOrValue: S | ((oldValue: S) => S)) {
             const oldVal = defaultValueRef.current;
             let newVal: S | null = null;
             if (isFunction(callbackOrValue)) {
-                newVal = (callbackOrValue as ((oldValue: S) => S)).apply(null, [currentValue]);
+                newVal = (callbackOrValue as ((oldValue: S) => S)).apply(null, [$value.current]);
             } else {
                 newVal = callbackOrValue as S;
             }
