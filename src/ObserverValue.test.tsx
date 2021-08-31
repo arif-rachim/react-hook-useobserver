@@ -56,6 +56,65 @@ function ObserverTestWithUpdateState({value}){
     </div>
 }
 
+function ObserverTestUsingPrimitive(){
+    const [$value,setState] = useObserver(false);
+    useEffect(() => {
+        setState(val => {
+            if(val === false){
+                return true;
+            }else{
+                throw new Error('Expected value is false');
+            }
+        });
+        setTimeout(() => {
+            setState(val => {
+                if(val === true){
+                    return false;
+                }
+                throw new Error('Expected value is true');
+
+            });
+        },100);
+        setTimeout(() => {
+            setState(val => {
+                if(val === false){
+                    return true;
+                }
+                throw new Error('Expected value is false');
+            });
+        },200);
+        setTimeout(() => {
+            setState(val => {
+                if(val === true){
+                    return false;
+                }
+                throw new Error('Expected value is true');
+            });
+        },300);
+
+        setTimeout(() => {
+            setState(val => {
+                if(val === false){
+                    return true;
+                }
+                throw new Error('Expected value is false');
+            });
+        },400);
+        setTimeout(() => {
+            // @ts-ignore
+            setState(val => {
+                if(val === true){
+                    return 'OK';
+                }
+                throw new Error('Expected value is true');
+            });
+        },500);
+    },[]);
+    return <div id={'content'}>
+        {useObserverValue($value)}
+    </div>
+}
+
 function ObserverTestWithUpdateStateWithObserver({value}){
     const [$value,setState] = useObserver(false);
     useEffect(() => {
@@ -194,5 +253,14 @@ test('Test observer data with update function',async() => {
         });
     });
 
-
 })
+
+test('Test until result OK',async() => {
+    await act(async () => {
+        const test = mount(<ObserverTestUsingPrimitive/>);
+        await waitForExpect(() => {
+            expect(test.find('#content').html()).toMatch('<div id="content">OK</div>');
+        });
+    });
+})
+
