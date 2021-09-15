@@ -11,18 +11,17 @@ export function useObserverListener(observers: any, listener: (value: any) => vo
     propsRef.current = {listener, observerArray, observerIsArray};
 
     useLayoutEffect(() => {
-        const {listener: listenerCallback, observerArray, observerIsArray} = propsRef.current;
 
         function listener(index: number) {
             return function invokerExecutor(newValue) {
-                let currentValue = observerArray.map(o => o.current);
+                let currentValue = propsRef.current.observerArray.map(o => o.current);
                 let newValues = [...currentValue];
                 newValues.splice(index, 1, newValue);
-                const values = observerIsArray ? newValues : newValues[0];
-                listenerCallback.apply(null, [values]);
+                const values = propsRef.current.observerIsArray ? newValues : newValues[0];
+                propsRef.current.listener.apply(null, [values]);
             };
         }
-        const removeListeners: Function[] = observerArray.map(($o, index) => $o.addListener(listener(index)));
+        const removeListeners: Function[] = propsRef.current.observerArray.map(($o, index) => $o.addListener(listener(index)));
         return () => removeListeners.forEach(removeListener => removeListener.call(null))
     }, []);
 }
