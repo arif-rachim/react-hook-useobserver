@@ -60,7 +60,7 @@ function DisplayCount({count}){
 By changing `useObserver` instead, we have simply ensured that the DataGrid will not be re-rendered when `setCount` is invoked. 
 When the `setCount` component is called, just the DisplayCount component is re-rendered.
 
-###What does calling useObserver do?
+### What does calling useObserver do?
 ```jsx
 const [count,setCount] = useObserver(0);
 ```
@@ -77,12 +77,12 @@ As a result, we can utilize a property called "current" to access the current va
 return <div>{count.current}</div>
 ```
 
-###What are the benefits of using the useObserver?
+### What are the benefits of using the useObserver?
 useObserver will not re-render the component to which it is attached. 
 So, if the component that utilizes useObserver hooks has extensive and complicated children, 
 re-rendering, and performance degradation can be avoided.
 
-###How to listen if an observer is updated
+### How to listen if an observer is updated
 To find out if an observer is updated when setValue is called, add an event listener to the observer itself.
 So basically we can rewrite our example above to something like this.
 ```jsx
