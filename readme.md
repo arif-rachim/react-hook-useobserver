@@ -1,9 +1,11 @@
 # React Hook useObserver.
 
-Avoid excessive re-rendering in your React app by using `useObserver` and `useObserverListener` as an alternative to `useState` and `useEffect`.
+Avoid excessive re-rendering in your React app by using `useObserver` and `useObserverListener` as an alternative to `useState`.
 
-Both `useState` and `useEffect` are frequently used hooks. However, if not used correctly, these two hooks are the source of React application performance issue. The issue with useState is that whenever we call setState, react re-renders the component where we declared the useState. If we place useState at the parent component level and there are child components that are really sophisticated and heavy, this will be disastrous. 
-We may use `useObserver` and `useObserverListener` to solve this.
+Both `useState` is frequently used hook. However, when you use the setState function, useState will immediately re-render the component.
+Most of the time, we don't want to re-render the component right away, 
+and we want to make sure that we're re-rendering the component that listens to the change of a specific attribute
+in the state only. As an alternative, we can utilize useObserver to fix this problem.
 
 ###### The following are examples of common uses of useState.
 
@@ -30,7 +32,7 @@ function DisplayCount({count}){
 }
 
 ```
-The preceding scenario is an illustration of a common performance issue with React. We have an `Example` component with a state `count`,
+The preceding scenario is an illustration of a common re-rendering issue in React application. We have an `Example` component with a state `count`,
 and `Example` component render the `DataGrid` component. In general, the `DataGrid` component is huge and contains numerous rows. 
 If we don't conduct performance optimization, such as using `React.memo`, we will run into performance issue because React will re-render 
 the entire component  when the function from `setCount` is called.
