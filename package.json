@@ -12,7 +12,6 @@
   },
   "license": "MIT",
   "main": "lib/index.js",
-  "types": "lib",
   "scripts": {
     "build": "tsc -p .",
     "start": "npm run build -- -w",
