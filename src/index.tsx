@@ -4,7 +4,7 @@ import {useObserverListener} from "./useObserverListener";
 import {useObserverMapper} from "./useObserverMapper";
 import {useObserverValue} from "./useObserverValue";
 
-export default {
+export {
     useObserverListener,
     useObserver,
     ObserverValue,

@@ -3,11 +3,11 @@ import { useObserver } from "./lib/useObserver";
 import { useObserverListener } from "./lib/useObserverListener";
 import { useObserverMapper } from "./lib/useObserverMapper";
 import { useObserverValue } from "./lib/useObserverValue";
-export default {
+
+export {
     useObserverListener,
     useObserver,
     ObserverValue,
     useObserverValue,
     useObserverMapper
 };
-//# sourceMappingURL=index.js.map
