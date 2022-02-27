@@ -1,6 +1,6 @@
 {
   "name": "react-hook-useobserver",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "private": false,
   "author": {
     "email": "a.arif.r@gmail.com",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/marsa-emreef/react-hook-useobserver.git"
+    "url": "https://github.com/arif-rachim/react-hook-useobserver.git"
   },
   "license": "MIT",
   "main": "lib/index.js",
