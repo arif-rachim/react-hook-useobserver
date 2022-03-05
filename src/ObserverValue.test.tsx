@@ -15,10 +15,10 @@ function ObserverTest({initialValue}){
 }
 
 function ObserverTestUpdateWithFunction(){
-    const [$value,setValue] = useObserver();
+    const [$value,setValue] = useObserver(undefined);
     useEffect(() => {
         
-        setValue(oldValue => {
+        setValue(() => {
             return 'Dang';
         })
         
@@ -47,7 +47,7 @@ function ObserverValueTestWithInitialData({value}){
 }
 
 function ObserverTestWithUpdateState({value}){
-    const [$value,setState] = useObserver();
+    const [$value,setState] = useObserver(undefined);
     useEffect(() => {
         setState(value)
     },[value]);
@@ -129,8 +129,8 @@ function ObserverTestWithUpdateStateWithObserver({value}){
 }
 
 function TestMultipleObserverValue({propOne,propTwo}){
-    const [$stateOne,setStateOne] = useObserver(propOne);
-    const [$stateTwo,setStateTwo] = useObserver(propTwo);
+    const [$stateOne,] = useObserver(propOne);
+    const [$stateTwo,] = useObserver(propTwo);
     const [stateOne,stateTwo] = useObserverValue([$stateOne,$stateTwo]);
     return <div id={'content'}>
         {stateOne} {stateTwo}
@@ -140,7 +140,7 @@ function TestMultipleObserverValue({propOne,propTwo}){
 function TestMultipleObserverValueWithEffect({propOne='',propTwo=''}){
     const [$stateOne,setStateOne] = useObserver(propOne);
     const [$stateTwo,setStateTwo] = useObserver(propTwo);
-    const shit = useObserverValue($stateOne);
+    const shot = useObserverValue($stateOne);
 
     const [stateOne,stateTwo] = useObserverValue([$stateOne,$stateTwo]);
     useEffect(() => {

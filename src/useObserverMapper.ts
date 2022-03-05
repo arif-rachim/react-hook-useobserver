@@ -1,25 +1,19 @@
 import {useObserverListener} from "./useObserverListener";
 import {Observer,useObserver} from "./useObserver";
-import {isNullOrUndefined} from "./utils";
 
-export function useObserverMapper<S, S1>(observer: Observer<S>, map: (value: S) => S1): Observer<S1>;
-export function useObserverMapper<S>(observer: Observer<any>[], map: (value: any[]) => S): Observer<S>;
-export function useObserverMapper(observer, map: (value: any) => any) {
+export function useObserverMapper<S,Output>(observer:Observer<S>|Array<Observer<any>>, map: (value: S|Array<any>) => Output): Observer<Output> {
     const [newObserver, setNewObserver] = useObserver(map(getCurrentValue(observer)));
-    useObserverListener(newObserver, (newValue) => {
+    useObserverListener(newObserver, (newValue:any) => {
         const newMapValue = map(newValue);
         setNewObserver(newMapValue);
     })
     return newObserver;
 }
 
-function getCurrentValue(observers) {
-    if (!isNullOrUndefined(observers)) {
-        if (Array.isArray(observers)) {
-            return observers.map(value => value.current);
-        } else {
-            return observers.current;
-        }
+function getCurrentValue<S>(observers:Observer<S>|Array<Observer<any>>):S|Array<any> {
+    if (Array.isArray(observers)) {
+        return observers.map(value => value.current);
+    } else {
+        return observers.current;
     }
-    return null;
 }

@@ -2,9 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {Observer} from "./useObserver";
 import {useObserverListener} from "./useObserverListener";
 
-export function useObserverValue<S>(observer:Observer<S>,mapper?:(value:S) => any):any;
-export function useObserverValue(observer:Observer<any>[],mapper?:(value:[]) => any):any;
-export function useObserverValue(observers:any,mapper?:(any) => any){
+export function useObserverValue<S,Output>(observers:Observer<S>|Array<Observer<S>>,mapper?:(arg:S|Array<any>) => Output):Array<any> | S | Output{
     const isUnmounted = useRef(false);
     useEffect(() => {
         return () => {
@@ -13,12 +11,12 @@ export function useObserverValue(observers:any,mapper?:(any) => any){
     },[]);
     const [state, setState] = useState(() => {
         if(Array.isArray(observers)){
-            return (observers as Observer<any>[]).map((value:Observer<any>) => value.current);
+            const defaultVal = (observers as Observer<any>[]).map((value:Observer<any>) => value.current)
+            return mapper ? mapper(defaultVal) : defaultVal;
         }else{
-            return observers.current;
+            return mapper ? mapper(observers.current) : observers.current;
         }
     });
-
     useObserverListener(observers,(value) => {
         if(isUnmounted.current){
             return;

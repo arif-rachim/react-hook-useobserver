@@ -1,24 +1,22 @@
 import {MutableRefObject, useMemo, useRef} from "react";
 
 export type Observer<S> =
-    MutableRefObject<S | undefined>
+    MutableRefObject<S>
     & { addListener: (listener: (value: S) => void) => () => void };
 
 function isFunction(functionToCheck: any) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
-
-export function useObserver<S>(initialValue: (S | (() => S)) = undefined): [Observer<S>, (value: ((value: S) => S) | S) => void] {
+const noOp = () => () => {};
+export function useObserver<S>(initialValue: (S | (() => S))): [Observer<S>, (value: ((value: S) => S) | S) => void] {
 
     const defaultValueRef = useRef(initialValue);
     return useMemo(() => {
         let listeners: Function[] = [];
         let valueIsInitialized = false;
         const $value: Observer<S> = {
-            current: null, addListener: () => {
-                return () => {
-                }
-            }
+            current : {} as S,
+            addListener:noOp
         };
 
         const currentValue = isFunction(defaultValueRef.current) ? (defaultValueRef.current as Function).call(null) : defaultValueRef.current;
