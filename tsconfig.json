@@ -6,7 +6,8 @@
     "declaration": true,
     "outDir": "lib",
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "module": "CommonJS",
+    "allowSyntheticDefaultImports": false
   },
   "include": [
     "src"
