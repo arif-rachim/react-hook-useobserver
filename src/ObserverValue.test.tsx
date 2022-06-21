@@ -174,7 +174,7 @@ function UnMountChild(){
     },[]);
     return <div id="content">{toggle ? <Detail initialValue={'Hello'}/> : <label>No Child</label>}</div>
 }
-function Detail({initialValue}) {
+function Detail({initialValue}:{initialValue:any}) {
     const [$value] = useObserver(initialValue);
 
     return <div>

@@ -43,7 +43,9 @@ export function useObserver<S>(initialValue: Initialization<S>): [Observer<S>, D
                 return;
             }
             valueIsInitialized = true;
-            $value.current = newVal;
+            if(newVal !== null){
+                $value.current = newVal;    
+            }
             listeners.forEach(function listenerInvoker(l) {
                 if (newVal === oldVal) {
                     return;
